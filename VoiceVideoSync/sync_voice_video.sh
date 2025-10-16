@@ -11,12 +11,12 @@
 # BTW, Camo, 3 minutes, +0.5 seems to work... but not guaranteed.
 # -----------------------------------------------------------------------------
 
-INPUT="YourSong.mp4"
+INPUT="Camo - Amarillo - 2025-09-09 18-02-52.mp4"
 
 # Audio offset in seconds (e.g. -2.5, e.g. +4.15):
 # If you see that the video comes after / lags behind the matching audio, 
 # then move the offset to the positive direction. Else to the negative direction.
-OFFSET=-3.5
+OFFSET=+0.5
 
 # Generate random-ish 4-digit suffix
 SUFFIX=$(( RANDOM % 9000 + 1000 ))
