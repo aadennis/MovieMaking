@@ -1,8 +1,8 @@
-# Description: This script converts AVI files to MP4 files, deinterlacing the video and adding a 
+# Description: This script converts AVI and MOV files to MP4 files, deinterlacing the video and adding a 
 # credit screen with the filename and last modified date.
 # 
-# Usage: Place this script in a folder with AVI files, and run it. 
-# The script will convert all AVI files in the folder to MP4 files.
+# Usage: Place this script in a folder with AVI or MOV files, and run it. 
+# The script will convert all AVI and MOV files in the folder to MP4 files.
 # The output MP4 files will have the same resolution as the original AVI files. Attempting a different
 # resolution may result in interlace artifacts.
 
@@ -10,7 +10,7 @@
 # FFprobe is required to get the video resolution. 
 # The script uses the NVIDIA NVENC hardware encoder for video conversion. Ensure the NVIDIA GPU drivers are installed.
 # The script creates an intermediate MP4 file with deinterlacing and then concatenates it with a credit screen.
-# The credit screen includes the filename and last modified date of the original AVI file.
+# The credit screen includes the filename and last modified date of the original source file.
 # The final MP4 file is saved in the same folder as the original AVI file.
 # The script cleans up intermediate files after conversion.
 # The script uses the system date format (YYYY_MM_DD) for the credit screen.
@@ -28,7 +28,7 @@ output_folder = input_folder  # Change if needed
 ffmpeg_path = "ffmpeg"
 
 for filename in os.listdir(input_folder):
-    if filename.lower().endswith(".avi"):
+    if filename.lower().endswith((".avi", ".mov")):
         input_path = f"{input_folder}/{filename}"
 
         # Get last modified date
@@ -43,7 +43,7 @@ for filename in os.listdir(input_folder):
         intermediate_path = f"{output_folder}/{intermediate_filename}"
         final_path = f"{output_folder}/{final_filename}"
 
-        # First pass: Convert the AVI to an intermediate MP4, preserving resolution
+        # First pass: Convert the source file to an intermediate MP4, preserving resolution
         convert_command = [
             ffmpeg_path, "-y",
             "-i", input_path,
