@@ -11,15 +11,33 @@
 # BTW, Camo, 3 minutes, +0.5 seems to work... but not guaranteed.
 # -----------------------------------------------------------------------------
 
-INPUT="Camo - Amarillo - 2025-09-09 18-02-52.mp4"
+# Load config file
+CONFIG_FILE="./syncfix.conf"
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+    echo "Config file not found: $CONFIG_FILE"
+    exit 1
+fi
+
+# Source the config
+source "$CONFIG_FILE"
+
+echo "Using config: $CONFIG_FILE"
+echo "Input:  $INPUT"
+echo "Offset: $OFFSET"
+echo "Path to Input file: $VIDEO_PATH"
 
 # Audio offset in seconds (e.g. -2.5, e.g. +4.15):
 # If you see that the video comes after / lags behind the matching audio, 
 # then move the offset to the positive direction. Else to the negative direction.
-OFFSET=+0.5
+
+PATH_INC_FILE="${VIDEO_PATH}/${INPUT}"
 
 # Generate random-ish 4-digit suffix
 SUFFIX=$(( RANDOM % 9000 + 1000 ))
+
+# Join path and filename
+
 
 # Sanitize OFFSET for filename
 # Example output:
@@ -32,8 +50,8 @@ OFFSET_TAG=$(echo "$OFFSET" | sed 's/-/m/; s/+/p/; s/\./d/')
 # 📝 Derive output filename
 BASENAME="${INPUT%.*}"
 EXT="${INPUT##*.}"
-OUTPUT="${BASENAME}_${OFFSET_TAG}_${SUFFIX}.${EXT}"
+OUTPUT="${VIDEO_PATH}/${BASENAME}_${OFFSET_TAG}_${SUFFIX}.${EXT}"
 
 # 🛠 Realign audio using ffmpeg
-ffmpeg -i "$INPUT" -itsoffset "$OFFSET" -i "$INPUT" \
+ffmpeg -i "$PATH_INC_FILE" -itsoffset "$OFFSET" -i "$INPUT" \
 -map 0:v -map 1:a -c:v copy -c:a copy "$OUTPUT"
