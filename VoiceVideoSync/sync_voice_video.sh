@@ -53,5 +53,5 @@ EXT="${INPUT##*.}"
 OUTPUT="${VIDEO_PATH}/${BASENAME}_${OFFSET_TAG}_${SUFFIX}.${EXT}"
 
 # 🛠 Realign audio using ffmpeg
-ffmpeg -i "$PATH_INC_FILE" -itsoffset "$OFFSET" -i "$INPUT" \
+ffmpeg -i "$PATH_INC_FILE" -itsoffset "$OFFSET" -i "$PATH_INC_FILE" \
 -map 0:v -map 1:a -c:v copy -c:a copy "$OUTPUT"
