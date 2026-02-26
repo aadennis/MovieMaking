@@ -7,6 +7,7 @@ set -euo pipefail
 # ------------------------------------------------------------------
 # voice/video synchronisation helper
 #
+# RULE OF THUMB: Start video recording, then start audio recording.
 # This simple script takes a video file and a separate audio track that
 # starts later than the video.  It applies an `adelay` filter to the
 # audio stream and then remuxes video and delayed audio into a single
