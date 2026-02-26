@@ -3,13 +3,13 @@
 set -euo pipefail
 
 dir='/mnt/c/temp/demo/'
-sound_file=${dir}/x.WAV
-video_file=${dir}/x.mp4
-SECONDS=0.45
+sound_file=${dir}/x2_audio.mp4
+video_file=${dir}/x2.mp4
+output_file=${dir}/x_synced.mp4
+SECONDS=10.00
 
-ffmpeg -i $video_file -itsoffset $SECONDS -i $sound_file \
-  -map 0:v map 1:a \
+ffmpeg -y -i "$video_file" -itsoffset "$SECONDS" -i "$sound_file" \
+ -map 0:v -map -0:a -map 1:a \
   -c:v copy -c:a aac -b:a 192k \
-  x_synced.mp4
-
-
+  -shortest \
+  "$output_file"
