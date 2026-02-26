@@ -40,10 +40,14 @@ Given a video `clip.mp4` and a separate track `voice.mp4` that starts
 
 ```bash
 # inside the script (or export as environment variables)
-OFFSET=5000
+OFFSET=5000            # delay in milliseconds
 video_file=/path/to/clip.mp4
 sound_file=/path/to/voice.mp4
 output_file=/path/to/clip_synced.mp4
+
+# inside the script the filter uses the `all=1` option so one value
+# works regardless of channel count:
+# AUDIO_FILTER="[1:a]adelay=${OFFSET}:all=1[aud]"
 
 ./stitch_voice_video.sh
 ```

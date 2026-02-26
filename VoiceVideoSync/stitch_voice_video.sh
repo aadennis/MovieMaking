@@ -38,11 +38,7 @@ ffmpeg -y \
   -i "${video_file}" \
   -i "${sound_file}" \
   -filter_complex "$AUDIO_FILTER" \
-  -map 0:v      \ # take video from first input
-  -map -0:a     \ # drop any audio already in the video file
-  -map "[aud]"  \ # take delayed audio from filter output
-  -c:v copy      \ # copy video codec without re-encoding
-  -c:a aac -b:a 192k \ # encode audio to AAC at 192 kbps
-  "${output_file}"
+  -map 0:v -map -0:a -map "[aud]" \
+  -c:v copy -c:a aac -b:a 192k "${output_file}"
 
 
