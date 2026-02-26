@@ -8,9 +8,9 @@
 
 set -euo pipefail
 
-SRC="$1"          # e.g. "/mnt/d/onedrive/data/photos/2023/2023_08/Bikeride to Urban Plants"
-DEST="$2"         # e.g. "/mnt/c/tempx/output.mp4"
-TITLE="$3"        # e.g. "Bikeride to Urban Plants – August 2023"
+SRC="/mnt/c/temp/wildlifecam"
+DEST="/mnt/c/tempx/output.mp4"
+TITLE="Foxes in Garden - January 2026"
 
 cd "$SRC"
 
