@@ -1,9 +1,5 @@
 #! /usr/bin/bash
 
-# Exit immediately if a command exits with a non‑zero status,
-# treat unset variables as an error and disable pathname expansion.
-set -euo pipefail
-
 # ------------------------------------------------------------------
 # voice/video synchronisation helper
 #
@@ -14,25 +10,29 @@ set -euo pipefail
 # output file.  The video stream is copied; only the audio is re-encoded
 # to AAC.
 #
-# All configuration is done via shell variables below; you can modify
-# them directly or parameterise the script further if needed.
-# ------------------------------------------------------------------
+# All configuration is done via shell variables below
+#
+# Exit immediately if a command exits with a non‑zero status,
+# treat unset variables as an error and disable pathname expansion.
+set -euo pipefail
 
-# Base directory containing input/output files (change to suit your setup)
+------------------------------------------------------------------
+
+# Base directory containing input/output files 
 dir='/mnt/c/temp/demo/'
 
 # paths to the individual media components
-sound_file=${dir}/x2_audio.mp4    # audio track that lags behind video
-video_file=${dir}/x2.mp4          # original video-only file
-output_file=${dir}/x_synced4.mp4  # resulting combined file
+sound_file=${dir}/R05_0007.WAV    # source audio track that lags behind video
+video_file=${dir}/cur.mp4          # source video file (any audio gets stripped)
+output_file=${dir}/x_synced929.mp4  # resulting combined file
 
-# amount of delay to apply to the audio stream, in milliseconds
-# (e.g. 16 seconds = 16000 ms)
-OFFSET=16000   # audio starts 16 seconds after video
+# seconds, as float, of delay to apply to the audio stream
+offset=8.0   # audio starts offset seconds after video
+OFFSET_MS=$(echo "$offset * 1000" | bc)
 
 # construct the ffmpeg filter graph string.  it's quoted later to
 # prevent the shell from interpreting the pipe (|) character.
-AUDIO_FILTER="[1:a]adelay=${OFFSET}|${OFFSET}[aud]"
+AUDIO_FILTER="[1:a]adelay=${OFFSET_MS}|${OFFSET_MS}[aud]"
 
 # run ffmpeg with the complex filter and map streams appropriately
 ffmpeg -y \
@@ -42,4 +42,5 @@ ffmpeg -y \
   -map 0:v -map -0:a -map "[aud]" \
   -c:v copy -c:a aac -b:a 192k "${output_file}"
 
+echo "$offset seconds delay was applied to the audio stream"
 
